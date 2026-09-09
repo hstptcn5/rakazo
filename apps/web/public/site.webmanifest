@@ -1,7 +1,7 @@
 {
-  "name": "Rakazo",
-  "short_name": "Rakazo",
-  "description": "Your team of always-on agents.",
+  "name": "Super Team Personal",
+  "short_name": "Super Team",
+  "description": "Your personal team of persistent AI teammates.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050506",
