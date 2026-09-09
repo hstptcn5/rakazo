@@ -20,6 +20,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IntegrationSetup } from "../components/integrations/IntegrationSetup";
 import type { ModelCatalogEntry } from "../lib/model-auth";
+import { ensurePersonalRoster, isDefaultPersonalSpace } from "../lib/personal-roster";
 import { rpc } from "../lib/rpc";
 import { useModelOAuthSignIn } from "../lib/use-model-oauth-signin";
 
@@ -300,6 +301,13 @@ export function OnboardingPage() {
     setError(null);
     try {
       const bot = await ensureFirstBot();
+      const navigation = await rpc.spaces.list();
+      if (isDefaultPersonalSpace(navigation)) {
+        await ensurePersonalRoster({
+          list: () => rpc.bots.list(),
+          create: (input) => rpc.bots.create(input),
+        });
+      }
       for (const serverId of integrationServers) {
         await rpc.mcp.assignments.approve({ botId: bot.id, serverId });
       }
